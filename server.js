@@ -9,6 +9,15 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://makaanmart.in"
+  ],
+  credentials: true
+}));
+
+
 /* Middleware */
 app.use(cors());
 app.use(express.json());
