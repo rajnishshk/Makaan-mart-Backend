@@ -9,13 +9,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "https://makaanmart.in"
-  ],
-  credentials: true
-}));
+
 
 
 /* Middleware */
@@ -34,6 +28,14 @@ mongoose.connect(process.env.MONGO_URI)
     process.exit(1);
   });
 
+
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://makaanmart.in"
+  ],
+  credentials: true
+}));
 
 /* Routes */
 app.use("/api/auth", authRoutes);
