@@ -4,21 +4,30 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js";
 
-
 dotenv.config();
 
 const app = express();
 
+/* CORS - must be before all routes */
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://makaanmart.in",
+    "https://www.makaanmart.in"
+  ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
 
-
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 /* Middleware */
-app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
 console.log("MONGO URI:", process.env.MONGO_URI);
-
 
 /* MongoDB Connection */
 mongoose.connect(process.env.MONGO_URI)
@@ -27,20 +36,6 @@ mongoose.connect(process.env.MONGO_URI)
     console.error("MongoDB Connection Failed:", err.message);
     process.exit(1);
   });
-
-/*cors*/
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://makaanmart.in",
-    "https://www.makaanmart.in"
-  ],
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-type', 'Authorization'],
-  credentials: true
-}));
-
-app.options('*', cors());
 
 /* Routes */
 app.use("/api/auth", authRoutes);
