@@ -28,14 +28,19 @@ mongoose.connect(process.env.MONGO_URI)
     process.exit(1);
   });
 
-
+/*cors*/
 app.use(cors({
   origin: [
-    "http://localhost:3000",
-    "https://makaanmart.in"
+    "http://localhost:5173",
+    "https://makaanmart.in",
+    "https://www.makaanmart.in"
   ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-type', 'Authorization'],
   credentials: true
 }));
+
+app.options('*', cors());
 
 /* Routes */
 app.use("/api/auth", authRoutes);
